@@ -16,10 +16,8 @@ source = dict((file_name, file_contents(file_name))for file_name in data_files)
 def mapfn(k,v):
     print 'map ' + k
     for line in v.splitlines():
-        if k == 'C:\\Temp\\Join\\Data\\2.2-vendas.csv':
-            yield line.split(';')[0], 'Vendas' + ':' + line.split(';')[5]
-        if k == 'C:\\Temp\\Join\\Data\\2.2-filiais.csv':
-            yield line.split(';')[0], 'Filial' + ':' + line.split(';')[1]
+        for author in line.split(':::')[1].split('::'):
+            yield author, line.split(':::')[2]
 
 def reducefn(k, v):
     print 'reduce ' + k
