@@ -2,7 +2,7 @@ import mincemeat
 import glob
 import csv
 
-data_files = glob.glob('C:\\Temp\\Join\\Data\\*')
+data_files = glob.glob('C:\\Temp\\Author\\Data\\*')
 
 def file_contents(file_name):
     f = open(file_name)
@@ -39,6 +39,6 @@ s.reducefn = reducefn
 
 results = s.run_server(password="p4ssw0rd")
 
-w = csv.writer(open("C:\\Temp\\Join\\result.csv", "w"))
+w = csv.writer(open("C:\\Temp\\Author\\result.csv", "w"))
 for k, v in results.items():
     w.writerow([k, str(v).replace("[", "").replace("]", "").replace("'", "").replace(" ", "")])
