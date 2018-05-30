@@ -20,16 +20,18 @@ def mapfn(k,v):
         for author in line.split(':::')[1].split('::'):
             for word in line.split(':::')[2].split():
                 if (word not in allStopWords):
-                    yield author word
+                    yield author, word
 
 def reducefn(k, v):
     print 'reduce ' + k
     words = dict()
     for word in v:
+        if (words.get(word, None) is None):
+            words[word] = 0
         words[word] = words[word] + 1
     l = list()
     for k, w in words.items():
-        l.append(k + ':' + str(v) + ', ')
+        l.append(k + ':' + str(w) + ', ')
     return l
 
 s = mincemeat.Server()
