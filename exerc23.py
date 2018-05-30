@@ -15,9 +15,12 @@ source = dict((file_name, file_contents(file_name))for file_name in data_files)
 
 def mapfn(k,v):
     print 'map ' + k
+    from stopwords import allStopWords
     for line in v.splitlines():
         for author in line.split(':::')[1].split('::'):
-            yield author, line.split(':::')[2]
+            for word in line.split(':::')[2].split():
+                if (word not in allStopWords):
+                    yield author word
 
 def reducefn(k, v):
     print 'reduce ' + k
