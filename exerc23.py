@@ -24,16 +24,13 @@ def mapfn(k,v):
 
 def reducefn(k, v):
     print 'reduce ' + k
-    total = 0
-    nomeFilial = ''
-    for index, item in enumerate(v):
-        if item.split(':')[0] == 'Vendas':
-            total = int(item.split(':')[1]) + total
-        if item.split(':')[0] == 'Filial':
-            nomeFilial = item.split(':')[1]
-    L = list()
-    L.append(nomeFilial + ', ' + str(total))
-    return L
+    words = dict()
+    for word in v:
+        words[word] = words[word] + 1
+    l = list()
+    for k, w in words.items():
+        l.append(k + ':' + str(v) + ', ')
+    return l
 
 s = mincemeat.Server()
 s.datasource = source
