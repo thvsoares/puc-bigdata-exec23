@@ -13,26 +13,34 @@ def file_contents(file_name):
     
 source = dict((file_name, file_contents(file_name))for file_name in data_files)
 
-def mapfn(k,v):
-    print 'map ' + k
-    from stopwords import allStopWords
-    for line in v.splitlines():
-        for author in line.split(':::')[1].split('::'):
-            for word in line.split(':::')[2].split():
-                if (word not in allStopWords):
-                    yield author, word
+def mapfn(k, v):
+    try:
+        print 'map ' + k
+        from stopwords import allStopWords
+        for line in v.splitlines():
+            for author in line.split(':::')[1].split('::'):
+                for word in line.split(':::')[2].split():
+                        word_clear = word.replace(".", "").replace("-", "")
+                        if (word_clear and word_clear not in allStopWords):
+                            yield author, word_clear
+    except:
+        print 'map error'
 
 def reducefn(k, v):
-    print 'reduce ' + k
-    words = dict()
-    for word in v:
-        if (words.get(word, None) is None):
-            words[word] = 0
-        words[word] = words[word] + 1
-    l = list()
-    for k, w in words.items():
-        l.append(k + ':' + str(w) + ', ')
-    return l
+    try:
+        print 'reduce ' + k
+        words = dict()
+        for word in v:
+            if (words.get(word, None) is None):
+                words[word] = 0
+            words[word] = words[word] + 1
+        l = list()
+        for k, w in words.items():
+            l.append(k + ':' + str(w) + ', ')
+        return l
+    except:
+        print 'reduce error'
+        return None
 
 s = mincemeat.Server()
 s.datasource = source
